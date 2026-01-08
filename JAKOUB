@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JKOUB Ai - منصة الذكاء الاصطناعي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* ================================================= */
+        /* === قسم CSS (التصميم) === */
+        /* ================================================= */
+        :root {
+            --main-blue: #10686e;
+            --sky-blue: #85cfec;
+            --glass-bg: rgb(0, 0, 0);
+            --border-radius: 150px 20px;
+            --shadow-glow: 0 0 1500px var(--main-blue), 0 0 25px var(--sky-blue);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin:200;
+            padding: 0;
+            transition: all 0.5s ease;
+        }
+       
+
+        body {
+            font-family:  Verdana, Geneva, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial ;
+            background: #06090c;
+            color: #ffffff;
+            line-height: 1.6;
+            text-align: right;
+        
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- العنوان الزجاجي المتوهج والتنسيقات العامة بقيت كما هي --- */
+        .main-header { text-align: center; padding: 50px 20px; }
+
+   /* --- تنسيق صورة البروفيل الجديدة --- */
+        .profile-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 150px; /* المسافة بين الصورة والنص */
+        }
+
+        .profile-img {
+            width: 120px;  /* يمكنك تكبير أو تصغير الحجم من هنا */
+            height: 150px;
+            border-radius: 500%;
+            border: 3px solid var(--sky-blue);
+            box-shadow: 0 0 150px var(--sky-blue);
+            object-fit: cover;
+        }
+
+
+        .glass-text { 
+            font-size: 5vw; font-weight: 900; letter-spacing: 5px; text-transform:  uppercase;
+            background: var(--glass-bg-4D); backdrop-filter: blur(105px); -webkit-backdrop-filter: blur(10px);
+            padding: 20px 40px; border-radius: var(--border-radius); border: 5px solid var(--sky-blue);
+            box-shadow: 0 0 30px rgba(0, 123, 255, 0.5); color: transparent; background-clip: text;
+            -webkit-background-clip: text; text-fill-color: rgba(255, 255, 255, 0.8); -webkit-text-fill-color: rgba(255, 255, 255, 0.8);
+        }
+        .glowing { 
+            text-shadow: 0 0 50px var(--sky-blue), 0 0 10px var(--sky-blue), 0 0 15px var(--sky-blue), 0 0 20px var(--sky-blue);
+            color: #ffffff !important;
+        }
+
+        h2 { text-align: center; margin-bottom: 3px; padding: 10px; border-bottom: 2px solid var(--main-blue); display: block; width: 100%; }
+        .image-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-bottom: 50px; }
+        .image-item { 
+            height: 490px; background-color: #2c3e50; background-image: url('https://picsum.photos/400/300?random=1');
+            background-size: cover; background-position: center; border-radius: var(--border-radius);
+            border: 3px solid var(--main-blue); box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); cursor: pointer;
+        }
+        .image-item:hover { transform: scale(1.03); box-shadow: var(--shadow-glow); }
+
+        .options-grid { display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap; margin-top: 50px; }
+        .option-card {
+            background: var(--glass-bg); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            padding: 30px; border-radius: var(--border-radius); flex: 1 1 200px; text-align: center; cursor: pointer;
+            border: 2px solid var(--sky-blue); box-shadow: 0 0 10px rgba(135, 206, 235, 0.2);
+        }
+        .option-card:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-5px); box-shadow: var(--shadow-glow); }
+        .option-card h3 { margin-top: 15px; }
+        .icon-glow { font-size: 6em; color: var(--sky-blue); text-shadow: 0 0 10px var(--sky-blue), 0 0 20px var(--sky-blue); }
+
+        /* === قسم واجهة الأدوات (الصفحة الثانية) - التعديل هنا === */
+        #tools-view { display: none; padding-top: 20px; }
+
+
+
+/* --- إضافة إطار المعاينة الزجاجي الفخم --- */
+.preview-frame {
+    width: 100%;
+    height: 480px; /* ارتفاع المستطيل */
+    margin: 20px 0 40px 0; /* مسافات حول الإطار */
+    border-radius: 50px; /* زوايا منحنية فخمة */
+    background: rgba(255, 255, 255, 0.03); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid rgba(133, 207, 236, 0.3); /* لون سماوي شفاف */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px var(--main-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.preview-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* لملء المستطيل بالصورة */
+    opacity: 0.9; /* شفافية بسيطة لتعزيز المظهر الزجاجي */
+    transition: transform 1s ease;
+}
+
+.preview-frame:hover img {
+    transform: scale(1.1); /* تأثير تقريب عند تمرير الماوس */
+}
+
+.preview-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 30px;
+    background: linear-gradient(to top, rgba(6, 9, 12, 0.9), transparent);
+    text-align: right;
+}
+
+
+.video-glass-frame {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border-radius: 30px;
+    border: 2px solid var(--sky-blue);
+    box-shadow: 0 0 30px var(--main-blue);
+    overflow: hidden;
+}
+
+.video-glass-frame video {
+    width: 100%;
+    border-radius: 20px;
+    display: block;
+}
+
+
+
+
+
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-top: 30px; }
+
+        .tool-box {
+            background: #242732;
+            padding: 20px 10px; /* تقليل الـ padding الأفقي لترك مساحة للاسم */
+            text-align: center;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            border: 1px solid var(--main-blue);
+            box-shadow: 0 0 8px rgba(0, 187, 255, 0.537);
+        }
+
+        .tool-box:hover {
+            background: #12a1a6;
+            transform: scale(1.5);
+            border-color: var(--sky-blue);
+        }
+        
+        /* التنسيق الجديد لوسم الصورة (الأيقونة) */
+        .tool-icon-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; /* لجعلها دائرية */
+            margin: 0 auto 10px;
+            display: block;
+            object-fit: cover; /* لضمان ملء الصورة للحجم المحدد */
+            border: 3px solid var(--sky-blue); /* إطار أزرق حول الصورة */
+            box-shadow: 0 0 100px rgba(135, 200, 235, 0.549);
+        }
+
+        /* تنسيق اسم الأداة */
+        .tool-name {
+            font-size: 0.99em;
+            font-weight: bold;
+            color: #ffffff;
+            margin-top: 5px;
+            /* فصل الاسم عن الصورة */
+            display: block;
+            height: 30px; /* لتثبيت ارتفاع الخانة مهما كان طول الاسم */
+            overflow: hidden; /* لإخفاء الاسم إذا كان طويلاً جداً */
+            line-height: 1.2;
+        }
+        
+        
+        .image-item:nth-child(2) { background-image: url('https://picsum.photos/400/300?random=2'); }
+        .image-item:nth-child(3) { background-image: url('https://picsum.photos/400/300?random=3'); }
+        .image-item:nth-child(4) { background-image: url('https://picsum.photos/400/300?random=4'); }
+        .image-item:nth-child(5) { background-image: url('https://picsum.photos/400/300?random=5'); }
+        .image-item:nth-child(6) { background-image: url('https://picsum.photos/400/300?random=6'); }
+        .image-item:nth-child(7) { background-image: url('https://picsum.photos/400/300?random=7'); }
+        .image-item:nth-child(8) { background-image: url('https://picsum.photos/400/300?random=8'); }
+        .image-item:nth-child(9) { background-image: url('https://picsum.photos/400/300?random=9'); }
+        .image-item:nth-child(10) { background-image: url('https://picsum.photos/400/300?random=10'); }
+       
+       
+        .back-button {
+            display: inline-block;
+            padding: 20px 30px;
+            background: var(--main-blue);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            text-align: right;
+            box-shadow: 0 0 100px rgba(135, 235, 222, 0.768);
+        }
+ 
+        
+
+
+    </style>
+</head>
+<body>
+
+    <div id="main-view" class="container">
+        <header class="main-header">
+            <div class="profile-container">
+            <img src="https://i.postimg.cc/P53f3m2R/Picsart-26-01-03-17-16-08-651.jpg" alt="Profile" class="profile-img"><h1 id="glass-text" class="glass-text">JKOUB Ai</h1>
+
+ <div class="preview-frame" id="service-preview-frame"><img src="https://i.postimg.cc/nr4cTjyZ/Picsart-25-12-20-23-29-07-481.png" alt="Service Banner">
+       </div>
+        </header>
+          <header class="main-header">
+            <h1 id="glass-text" class="glass-text">هنا ستجد كل ما تحتاجه </h1>
+
+<div class="video-glass-frame">
+    <video autoplay muted loop playsinline>
+        <source src="https://res.cloudinary.com/dtlesi7cc/video/upload/Picsart_25-12-31_14-36-53-753_ywcmjc.mp4" type="video/mp4">
+        متصفحك لا يدعم تشغيل الفيديو.
+    </video>
+</div>
+
+
+          </header>
+              
+        <section class="inspiration-gallery">
+            <h2>صور ملهمة من JAKOUB Ai</h2>
+            <div class="image-grid">
+                <div class="image-item image-1"></div>
+                <div class="image-item image-2"></div>
+                <div class="image-item image-3"></div>
+                <div class="image-item image-4"></div>
+                <div class="image-item image-5"></div>
+                <div class="image-item image-6"></div>
+                <div class="image-item image-7"></div>
+                <div class="image-item image-8"></div>
+                <div class="image-item image-9"></div>
+                <div class="image-item image-10"></div>
+            </div>
+        </section>
+
+        <section class="user-options">
+            <h2>اختر خدمتك من خدمات الذكاء الاصطناعي</h2>
+            <div class="options-grid">
+                <div class="option-card" data-service="image-edit"><i class="fas fa-magic icon-glow"></i><h3>تعديل الصور</h3></div>
+                <div class="option-card" data-service="video-generation"><i class="fas fa-video icon-glow"></i><h3>توليد الفيديوهات</h3></div>
+                <div class="option-card" data-service="research-creation"><i class="fas fa-book-open icon-glow"></i><h3>إنشاء البحوث العلمية</h3></div>
+                <div class="option-card" data-service="audio-edit"><i class="fas fa-volume-up icon-glow"></i><h3>تعديل التسجيلات الصوتية</h3></div>
+            </div>
+        </section>
+    </div>
+
+   <div id="tools-view" class="container">
+        <button id="back-button" class="back-button"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+        
+        <div class="preview-frame" id="service-preview-frame">
+            <img src="" alt="Service Banner" id="service-main-img">
+            <div class="preview-overlay">
+                <h2 id="tools-view-title" style="border:none; margin:0; padding:0;">أدوات <span id="current-service-name"></span></h2>
+            </div>
+        </div>
+        <div class="tools-grid" id="tools-list"></div>
+
+</div>
+
+
+
+    <script>
+        /* ================================================= */
+        /* === قسم JavaScript (الديناميكية) === */
+        /* ================================================= */
+
+      document.addEventListener('DOMContentLoaded', () => {
+            const mainView = document.getElementById('main-view');
+            const toolsView = document.getElementById('tools-view');
+            const backButton = document.getElementById('back-button');
+            const currentServiceName = document.getElementById('current-service-name');
+            const toolsList = document.getElementById('tools-list');
+            const mainImg = document.getElementById('service-main-img');
+            const optionCards = document.querySelectorAll('.option-card');
+            
+            // =================================================================
+            // === 1. تعديل بنية البيانات: وضع رابط الصورة والاسم منفصلين ===
+            // =================================================================
+
+            const toolsData = {
+                'image-edit': {
+                    name: 'تعديل الصور',
+                    banner: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&q=80&w=1200',
+                    tools: [
+                        { name: 'Pinterest', link: 'https://www.pinterest.com', icon_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Pinterest.svg/1024px-Pinterest.svg.png' }, // 👈 رابط الصورة هنا
+                        { name: 'Meta Ai', link: 'https://www.meta.ai', icon_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Meta_AI_logo.png/500px-Meta_AI_logo.png' }, // 👈 رابط الصورة هنا
+                        // يجب إكمال الروابط الحقيقية لصور الأيقونات هنا
+                        { name: 'Google Ai Stodiu', link: 'https://aistudio.google.com', icon_url: 'https://registry.npmmirror.com/@lobehub/icons-static-png/1.74.0/files/dark/aistudio.png' },
+                        { name: 'Dreamina.AI', link: 'https://dreamina.capcut.com/', icon_url: 'https://i.postimg.cc/KzRsHQJ3/download.jpg' },
+                        { name: 'Remini', link: 'https://remini.ai/', icon_url: 'https://i.postimg.cc/pVKgWxHt/download.png' },
+                        { name: 'Pollo.ai', link: 'https://pollo.ai/', icon_url: 'https://cdn-1.webcatalog.io/catalog/pollo-ai/pollo-ai-icon-filled-256.webp?v=1764549516991' },
+                        { name: 'Img2Go', link: 'https://www.img2go.com/ar', icon_url: 'https://cdn-1.webcatalog.io/catalog/img2go-com/img2go-com-icon-filled-256.webp?v=1737344348132' },
+                        { name: 'Canva Pro', link: 'https://www.canva.com/ar_eg/pro/', icon_url: 'https://www.voomstore.ci/67183-large_default/canva-pro.jpg' },
+                        { name: 'Seedream 4.5', link: 'https://chatlyai.app/image-generation?utm_model=a_seedream_4_5', icon_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbm1SUgQWsQ-ob1iyFtALgRlTe0Mb6Z70ZTw&s' },
+                        { name: 'Pixlr', link: 'https://pixlr.com/fr/', icon_url: 'https://10web.io/wp-content/uploads/2024/07/Pixlr.png' },
+                    ]
+                },
+                'video-generation': {
+                    name: 'توليد الفيديوهات',
+                    banner: 'https://i.postimg.cc/kG3pvXzC/Picsart-26-01-03-17-36-28-997.jpg',
+                    tools: [
+                        { name: 'Visla', link: 'https://www.visla.us/', icon_url: 'https://www.directia.fr/wp-content/uploads/2023/07/031125E6-C225-41B2-A687-BB6FECB9E9FE-300x300.png' },
+                        { name: 'CapCut', link: 'https://www.capcut.com', icon_url: 'https://gpng.net/wp-content/uploads/Capcut-Logo-Transparent-Free.png' },
+                        { name: 'Meta Ai', link: 'https://www.meta.ai', icon_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Meta_AI_logo.png/500px-Meta_AI_logo.png' },
+                        { name: 'KLING Ai', link: 'https://klingai.com/global/', icon_url: 'https://i.postimg.cc/G2zgqFky/SAVE-20251222-151803.jpg' },
+                        { name: 'InVideo', link: 'https://invideo.io/', icon_url: 'https://ik.imagekit.io/sb8yfmfebk/tr:dpr-2:q-85/images/large/logo_black_in_02bf7cb665.webp' },
+                        { name: 'Synthesia', link: 'https://www.synthesia.io/', icon_url: 'https://logosandtypes.com/wp-content/uploads/2024/05/synthesia.svg' },
+                        { name: 'Deevid.Ai', link: 'https://deevid.ai/fr', icon_url: 'https://i.postimg.cc/nhnSmwb8/SAVE-20251222-150127.jpg' },
+                        { name: 'hailuo.ai', link: 'https://hailuoai.video/', icon_url: 'https://i.postimg.cc/zvv1SRVD/Sans-titre.jpg' },
+                        { name: 'Deepbrain', link: 'https://www.aistudios.com/', icon_url: 'https://i.postimg.cc/LXkNhzCH/IMG-20251222-150858.jpg' },
+                        { name: 'Fliki', link: 'https://fliki.ai/', icon_url: 'https://play-lh.googleusercontent.com/mAR2h6_Jlsa2643EU9R9cXgErsZEbByGtN9v9uQoDQvRLVxd738gE45MHk66-WPLr6E=w480-h960-rw' },
+                    ]
+                },
+                'research-creation': {
+                    name: 'إنشاء البحوث العلمية',
+                    banner: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=1200&h=300&fit=crop',
+                    tools: [
+                        { name: 'Gemini', link: 'https://gemini.google.com/app?hl=ar', icon_url: 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/7cf51e188450701.65b6d6991d38d.png' },
+                        { name: 'Elicit AI', link: 'https://elicit.com/', icon_url: 'https://prod-findmyaitool.s3.us-east-1.amazonaws.com/images/ai-tool/logo/Elicit-1723796651362' },
+                        { name: 'Consensus', link: 'https://consensus.app/', icon_url: 'https://logosandtypes.com/wp-content/uploads/2025/04/consensus.svg' },
+                        { name: 'Scite AI', link: 'https://scite.ai/', icon_url: 'https://i.postimg.cc/DzpNkWq9/images.png' },
+                        { name: 'WriteSonic', link: 'https://writesonic.com/', icon_url: 'https://i.postimg.cc/NjFY29Qn/download.jpg' },
+                        { name: 'ResearchRabbit', link: 'https://www.researchrabbit.ai/', icon_url: 'https://i.postimg.cc/5t8rXbQp/download.png' },
+                        { name: 'Connected Papers', link: 'https://www.connectedpapers.com/', icon_url: 'https://i.postimg.cc/bvRTXJ26/download.jpg' },
+                        { name: 'Semantic Scholar', link: 'https://www.semanticscholar.org/', icon_url: 'https://i.postimg.cc/sfGTxVFP/download.jpg' },
+                        { name: 'Notion AI', link: 'https://www.notion.com/product/ai', icon_url: 'https://i.postimg.cc/6QTdP0tn/download.png' },
+                        { name: 'Trinka AI', link: 'https://www.trinka.ai/', icon_url: 'https://i.postimg.cc/43rhSRWW/images.png' },
+                    ]
+                },
+                'audio-edit': {
+                    name: 'تعديل التسجيلات الصوتية',
+                    banner: 'https://i.postimg.cc/L418Wmmr/Picsart-25-12-31-15-15-31-904.png',
+                    tools: [
+                        { name: 'Vocal Remover', link: 'https://vocalremover.org/', icon_url: 'https://10web.io/wp-content/uploads/2024/08/Vocal_Remover_logo.jpg' },
+                        { name: 'Heygen', link: 'https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.heygen.com/&ved=2ahUKEwjyrMGj5pqRAxVQg_0HHY3mHA0QFnoECBAQAQ&sqi=2&usg=AOvVaw1Em80lJMjnNFcMK6Mee5EB', icon_url: 'https://neuro-ai.ru/upload/000/u1/6/4/heygen-photo-square.webp' },
+                        { name: 'SUNO Ai', link: 'https://suno.com/', icon_url: 'https://lesjours.fr/ressources/res840/square/people/suno.jpeg' },
+                        { name: 'UVR', link: 'https://x-minus.pro/ai', icon_url: 'https://images.boosty.to/user/6257237/avatar?change_time=1751442534&croped=1&mh=160&mw=160' },
+                        { name: 'Mini max', link: 'https://www.minimax.io/', icon_url: 'https://i.postimg.cc/nhNv1jCS/download.jpg' },
+                        { name: 'Audo Studio', link: 'https://www.audo.ai/', icon_url: 'https://i.postimg.cc/MK7MBwqB/phpkmvuxy-logo.png' },
+                        { name: 'Podcastle', link: 'https://podcastle.ai/', icon_url: 'https://i.postimg.cc/KcsQWnMH/download.png' },
+                        { name: 'Speechify', link: 'https://speechify.com/?source=fb-for-mobile&via=quanh&gad_source=1', icon_url: 'https://i.postimg.cc/LsSchXm2/images.jpg' },
+                        { name: 'Audacity', link: 'https://www.audacityteam.org/', icon_url: 'https://i.postimg.cc/xdttjyzS/images.jpg' },
+                        { name: 'Soundraw', link: 'https://soundraw.io/', icon_url: 'https://i.postimg.cc/xCGjb89S/download.jpg' },
+                    ]
+                },
+            }
+
+
+       function showToolsView(serviceType) {
+                const service = toolsData[serviceType];
+                if (!service) return;
+
+                // تحديث الصورة والاسم في الإطار الزجاجي
+                mainImg.src = service.banner;
+                currentServiceName.textContent = service.name;
+                toolsList.innerHTML = ''; 
+
+                service.tools.forEach(tool => {
+                    const toolBox = document.createElement('a');
+                    toolBox.href = tool.link;
+                    toolBox.target = "_blank";
+                    toolBox.classList.add('tool-box');
+                    toolBox.innerHTML = `
+                        <img src="${tool.icon_url}" class="tool-icon-img">
+                        <span class="tool-name">${tool.name}</span>
+                    `;
+                    toolsList.appendChild(toolBox);
+                });
+
+                mainView.style.display = 'none';
+                toolsView.style.display = 'block';
+                window.scrollTo(0, 0);
+            }
+
+            optionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    showToolsView(card.getAttribute('data-service'));
+                });
+            });
+
+            backButton.addEventListener('click', () => {
+                toolsView.style.display = 'none';
+                mainView.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
